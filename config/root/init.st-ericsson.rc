@@ -74,13 +74,19 @@ on fs
     # <root>/vendor/semc/system/bootstrap/masterreset/fstab.riogrande
     # accordingly.
 
-    setprop ro.crypto.fuse_sdcard true
+    export EXTERNAL_STORAGE /storage/sdcard0
+    mkdir /storage/sdcard0 0000 system system
+    mkdir /mnt/media_rw/sdcard0 0700 media_rw media_rw
+    mkdir /storage/sdcard0 0700 root root
+    symlink /storage/sdcard0 /sdcard
+    symlink /storage/sdcard0 /mnt/sdcard
+
 
     #wait /dev/block/mmcblk0p14
     #mkdir /sde
     #mount vfat /dev/block/mmcblk0p14 /sde  rw wait
 
-    mount_all fstab.st-ericsson
+    mount_all /fstab.st-ericsson
 
     # recovery must start from here because system partition is
     # sometimes busy and fail to unmount trought bootrec!

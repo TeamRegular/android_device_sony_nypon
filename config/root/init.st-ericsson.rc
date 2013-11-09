@@ -17,6 +17,9 @@ on early-init
     chmod 0644 /proc/cmdline
 
 on init
+    
+    mkdir /mnt/media_rw/sdcard0 0700 media_rw media_rw
+    mkdir /mnt/media_rw/usbdisk 0700 media_rw media_rw
     # setup the global environment
     export OMX_STE_ENS_COMPONENTS_DIR /system/lib/ste_omxcomponents/
     export OMX_BELLAGIO_LOADER_REGISTRY /system/etc/omxloaders
@@ -73,7 +76,7 @@ on fs
     # <root>/vendor/semc/system/bootstrap/masterreset/fstab.riogrande
     # accordingly.
 
-    setprop ro.crypto.state unsupported
+    setprop ro.crypto.fuse_sdcard true
 
     wait /dev/block/mmcblk0p14
     mkdir /sde
@@ -376,6 +379,17 @@ service phonet-netdev /system/bin/ifconfig upnlink0 up
     class main
     oneshot
 
+#add FUSE sdcard daemon service for sdcard
+service fuse_sdcard0 /system/bin/sdcard -u 1023 -g 1023 /mnt/media_rw/sdcard0 /storage/sdcard0
+    class late_start
+    disabled
+ 
+#add FUSE sdcard daemon service for usbdisk
+service fuse_usbdisk /system/bin/sdcard -u 1023 -g 1023 /mnt/media_rw/usbdisk /storage/usbdisk
+    class late_start
+    disabled
+ 
+ 
 #STE: Start the Modem Storage Agent (MSA) service
 service modem /system/bin/sh /system/etc/ste_modem.sh
     class modem-u8500

@@ -78,9 +78,9 @@ on fs
 
     setprop ro.crypto.fuse_sdcard true
 
-    wait /dev/block/mmcblk0p14
-    mkdir /sde
-    mount vfat /dev/block/mmcblk0p14 /sde  rw wait
+    #wait /dev/block/mmcblk0p14
+    #mkdir /sde
+    #mount vfat /dev/block/mmcblk0p14 /sde  rw wait
 
     mount_all fstab.st-ericsson
 
